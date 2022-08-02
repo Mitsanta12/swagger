@@ -22,6 +22,8 @@ tags:
   - name: Students
 
   - name: Courses
+
+  - name: Groups
  
 paths:
   /students:
@@ -74,7 +76,7 @@ paths:
                 items: 
                   $ref: '#/components/schemas/Student'
         400:
-          description: Error
+          description: Bad request
           content: {}
   /students/{id}:
     get:
@@ -251,16 +253,59 @@ paths:
         400:
           description: Bad Request
           content: {}
+
+  /groups:
+    get:
+      tags:
+        - groups
+  
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            format: int64
+          required: true    
+        - name: page_size
+          in: query
+          schema:
+            type: integer
+            format: int32
+          required: true
+      responses:
+        200:
+          description: List Course
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Groups'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: "400_BAD_REQUEST"
+                  message:
+                    type: string
+                    example: "Parameter missing"
+   
       
 components:
   schemas:
     Student:
       type: object
       properties:
+        name:
+          type: string
         id:
           type: string
-      allOf:
-        - $ref: '#/components/schemas/NewStudent'    
+      
     NewStudent:
       type: object
       properties:
@@ -287,8 +332,17 @@ components:
         createdDatetime:
           type: string
           format: date
-          example: "2001-01-10"
-
+          example: "2004-10-05"
+    Groups:  
+      type: object
+      properties:
+        name:
+          type: string
+        id:
+          type: string
+        group_id:
+         type: string
+        
 
  
       
