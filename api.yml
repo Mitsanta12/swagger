@@ -257,7 +257,7 @@ paths:
   /groups:
     get:
       tags:
-        - groups
+        - Groups
   
       parameters:
         - name: page
@@ -294,7 +294,31 @@ paths:
                   message:
                     type: string
                     example: "Parameter missing"
-   
+  /groups/{id}:
+    get:
+      tags:
+        - Groups
+      summary: Get id of group 
+      operationId: getGroup
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/Student'
+        400:
+          description: Bad request
+          content: {}
+  
       
 components:
   schemas:
