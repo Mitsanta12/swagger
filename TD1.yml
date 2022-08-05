@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: STD21108
+  title: STD21071
   version: 1.0.0
 servers:
 - url: http://STD21108.io/
@@ -59,7 +59,18 @@ paths:
                 items:
                   $ref: '#/components/schemas/Students'
         400:
-          description: Bad request
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: "400_BAD_REQUEST"
+                  message:
+                    type: string
+                    example: "Parameter missing"
     delete:
       tags:
       - Students
@@ -242,7 +253,18 @@ paths:
                 items:
                   $ref: '#/components/schemas/Course'
         400:
-          description: Bad request
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: "400_BAD_REQUEST"
+                  message:
+                    type: string
+                    example: "Parameter missing"
     delete:
       tags:
         - Courses
@@ -355,22 +377,20 @@ paths:
               changeDate:
                 summary: Change date
                 value:
-                  group : '22-07-2022'
+                  date : '22-07-2022'
       responses:
         200:
           description: successful operation
-          content:
-            application/json:
-              schema:
-                  $ref: '#/components/schemas/CreateCourse'
+         
         400:
-          description: Bad request
+          description: Bad request 
+          
   /groups:
     get:
       tags:
       - groups
       summary: Get a list of groups
-      operationId: getgroupe
+      operationId: getGroup
       parameters:
       - name: page
         in: query
@@ -394,21 +414,49 @@ paths:
                 items:
                   $ref: '#/components/schemas/Group'
         400:
-          description: Bad request
-
-
-
-      security:
-      - petstore_auth:
-        - write:pets
-        - read:pets
-      x-codegen-request-body-name: body
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: "400_BAD_REQUEST"
+                  message:
+                    type: string
+                    example: "Parameter missing"
+    delete:
+      tags:
+        - groups
+      summary: Delete group
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object 
+                properties:
+                  id:
+                    type: integer
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/Group'
+        400:
+          description:  BAD REQUEST
+          content: {}
   /groups/{id}:
     get:
       tags:
       - groups
-      summary: Get a groupe
-      operationId: getgroupeid
+      summary: Get groups ID
+      operationId: getgoupeid
       parameters:
       - name: id
         in: path
@@ -429,17 +477,19 @@ paths:
       tags:
       - groups
       summary: Delete a group by ID
-      operationId: deletegroupeid
+      operationId: deleteGroupid
       parameters:
       - name: id
         in: path
         required: true
         schema:
+          maximum: 10.0
+          minimum: 1.0
           type: integer
           format: int64
       responses:
         200:
-          description: Successfully deleted
+          description: sucsses
           content: {}
         400:
           description: Bad request
@@ -463,11 +513,11 @@ paths:
               $ref: '#/components/schemas/CreateGroup'
       responses:
         200:
-          description: successful operation
+          description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Group'
+                  $ref: '#/components/schemas/Group'
         400:
           description: Bad request
 components:
@@ -540,52 +590,5 @@ components:
         id:
           type: integer
           format: int64
-    error400:
-      required:
-      - type
-      - message
-      type: object
-      properties:
-        type:
-          type: string
-          example: BadRequestException
-        group:
-          type: string
-          example: Bad request
-    error403:
-      required:
-      - type
-      - message
-      type: object
-      properties:
-        type:
-          type: string
-          example: NotAuthorizedException
-        group:
-          type: string
-          example: Not authorized
-    error404:
-      required:
-      - type
-      - message
-      type: object
-      properties:
-        type:
-          type: string
-          example: ResourceNotFoundException
-        group:
-          type: string
-          example: Resource is not found
-    error500:
-      required:
-      - type
-      - message
-      type: object
-      properties:
-        type:
-          type: string
-          example: InternalServerException
-        group:
-          type: string
-          example: Unexpected error
+ 
     
