@@ -1,0 +1,401 @@
+openapi: 3.0.1
+info:
+  title: STD21071
+  description: "Here is the API description of a cinema's movie management"
+  version: 1.0.0
+servers:
+ - url: https://STD21071.com
+ - url: https://STD21XXX.com
+paths:
+  /films:
+    post:
+      tags:
+      - Films
+      summary: Add a new film
+      operationId: addFilm
+      requestBody:
+        description: Film object that needs to be added
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CreateFilm'
+        required: true
+      responses:
+        200:
+          description: Student added
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                   $ref: '#/components/schemas/Film'
+        400:
+          description: Bad request
+    get:
+      tags:
+      - Films
+      summary: Get a list of film
+      operationId: getStudent
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+      - name: page_size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Film'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: "400_BAD_REQUEST"
+                  message:
+                    type: string
+                    example: "Parameter missing"
+    put:
+      tags:
+      - Films
+      summary: Update existing films
+      operationId: putFilm
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Film'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/Film'
+        400:
+          description: Bad request
+    patch:
+      tags:
+      - Films
+      summary: Update existing films
+      description: "Possible changes on : projection"
+      operationId: patchfilm
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProjection'
+            examples:
+              changeProjection:
+                summary: Change projection
+                value:
+                  date : 'New projection'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateProjection'
+        400:
+          description: Bad request
+  /films/{id}:
+    get:
+      tags:
+      - Films
+      summary: Get a film
+      description: Get film with details
+      operationId: getFilmid
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Film'
+        400:
+          description: Bad request
+    delete:
+      tags:
+      - Films
+      summary: Delete a film by ID
+      operationId: deleteStudentid
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          maximum: 10.0
+          minimum: 1.0
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: sucsses
+        400:
+          description: Bad request
+  
+  /projections:
+    post:
+      tags:
+        - Projections
+      operationId: postprojection
+      summary: Create new projections
+      description: Create new projections
+      requestBody:
+        description: New projections
+        content:
+          application/json:
+           schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Film'
+      responses:
+        200: 
+          description: Projection to be created
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/CreateProjection'
+        400:
+          description: Bad request
+    get:
+      tags:
+        - Projections
+      operationId: getprojection
+      summary: Get all projections
+      description: get all projection with details
+      parameters:
+        - name: idProjection
+          in: path
+          schema:
+            type: integer
+          required: true
+      responses:
+        200: 
+          description: Details of projection
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectionFilm'
+        400:
+          description: Bad request
+    put:
+      tags:
+        - Projections
+      operationId: Putprojection
+      summary: Update existing projections
+      description: Change all information of projections
+      requestBody:
+        description: Projection to be updated
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CreateProjection'
+        required: true
+      responses:
+        200:
+          description: Successful Updating 
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: '#/components/schemas/CreateProjection'
+                
+        400:
+          description: Bad request
+    patch:
+      tags:
+      - Projections
+      summary: Update existing projections
+      description: "Possible changes on : date & rooms "
+      operationId: patchprojection
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProjection'
+            examples:
+              changedataProjection:
+                summary: Change date of projection
+                value:
+                  date : 'New date of projection'
+              changerooms:
+                summary: change room
+                value:
+                  room: new room
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateProjection'
+        400:
+          description: Bad request
+  /projections/{id}:
+    get:
+      tags:
+      - Projections
+      summary: Get a projection by ID
+      operationId: getProjectionsid
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Success
+          
+        400:
+          description: Bad request
+    delete:
+      tags:
+      - Projections
+      summary: Delete a projection by ID
+      operationId: deleteprojectionid
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          maximum: 10.0
+          minimum: 1.0
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: sucsses
+        400:
+          description: Bad request
+  
+
+components:
+  schemas:
+    CreateFilm:
+      type: object
+      properties:
+        idFilm:
+          type: integer
+        title:
+          type: string
+          example: "Titanic"
+        release_date:
+          type: string
+          format: date
+          example: "2022-01-01"
+        resume:
+          type: string
+          example: "Once upon a time..."
+        director:
+          type: string
+          example: "James Cameron"
+        duration:
+          type: string
+          format: date-time
+    Film:
+      type: object
+      properties:
+        category: 
+          type: string
+          example: "Action"
+      allOf:
+        - $ref: '#/components/schemas/CreateFilm'
+    Hall:
+      type: object
+      properties: 
+        number:
+          type: string
+          example: A
+        capacity:
+          type: integer
+          example: 300
+    CreateProjection:
+      type: object
+      properties:
+        idProjection:
+          type: integer
+        idFilm:
+          type: integer
+        hallNumber: 
+          type: string
+          enum:
+            - A
+            - B
+        diffusion:
+          type: string
+          format: date-time
+    ProjectionFilm:
+      type: object
+      properties:
+        film:
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Film'
+        hall:
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/Hall'
+        Projection:
+          allOf:
+            - $ref: '#/components/schemas/CreateProjection'
+    DeleteFilm:
+      type: object
+      properties:
+        idFilm:
+          type: integer
+    

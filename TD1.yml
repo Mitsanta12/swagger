@@ -3,7 +3,7 @@ info:
   title: STD21071
   version: 1.0.0
 servers:
-- url: http://STD21108.io/
+- url: http://STD21071.io/
 paths:
   /students:
     post:
